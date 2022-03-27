@@ -1,0 +1,5 @@
+.vscode
+*.pyc
+__pycahce__
+migrations
+get_receive.py
