@@ -39,6 +39,7 @@ router.beforeEach((to, from, next) => {
       } else {
         next()
       }
+      next()
     }
   } else {
     /* has no token*/

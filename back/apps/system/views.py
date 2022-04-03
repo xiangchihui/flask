@@ -28,34 +28,34 @@ def login():
     try:
         if not request.is_json:
             return jsonify({'status':400,'message':'Missing JSON in request'})
-        
+        print(request.form)
         data= json.loads(request.get_data()) #获取前端提交过来的json数据
         print(data)
         username = data.get('username',None)
         password = data.get('password',None)      
-        code = data.get('code',None)
-        _uuid = data.get('uuid',None)
-        if not code:
-           return jsonify({"status":400,"message": "请输入验证码!"}), 400
-        print(session.get(_uuid))
-        if session.get(_uuid) is None:
-            return jsonify({"status":400,"message": "验证码不存在或已过期"}), 400
-        if session.get(_uuid) == int(code):
-            password = decrypt_func(os.path.abspath(os.curdir)+'/apps/utils/clinet_private.pem',password)
-            user = User.query.filter_by(username=username).first()
-            if not user:
-                return jsonify({"status":400,"message": "{} 用户不存在!".format(username)}), 400
-            if not bcrypt.check_password_hash(user.password,password):
-                app.logger.warning("{} 用户密码不正确!".format(username))
-                return jsonify({"status":400,"message": "{} 用户密码不正确!".format(username)}), 400
-            if not user.enabled:
-                return jsonify({"status":400,"message": "{} 用户未激活!".format(username)}), 400
-            app.logger.info("{}用户登陆成功".format(username))
-            access_token = create_access_token(identity=user.username)
-            session[username]=user.init_permission().get('roles')
-            return jsonify({'status':200,'user':user.init_permission(),'token':'Bearer '+access_token})
-        else:
-            return jsonify({"status":400,"message": "输入的验证码有误"}), 400        
+        # code = data.get('code',None)
+        # _uuid = data.get('uuid',None)
+        # if not code:
+        #    return jsonify({"status":400,"message": "请输入验证码!"}), 400
+        
+        # if session.get(_uuid) is None:
+        #     return jsonify({"status":400,"message": "验证码不存在或已过期"}), 400
+        # if session.get(_uuid) == int(code):
+        password = decrypt_func(os.path.abspath(os.curdir)+'/apps/utils/clinet_private.pem',password)
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            return jsonify({"status":400,"message": "{} 用户不存在!".format(username)}), 400
+        if not bcrypt.check_password_hash(user.password,password):
+            app.logger.warning("{} 用户密码不正确!".format(username))
+            return jsonify({"status":400,"message": "{} 用户密码不正确!".format(username)}), 400
+        if not user.enabled:
+            return jsonify({"status":400,"message": "{} 用户未激活!".format(username)}), 400
+        app.logger.info("{}用户登陆成功".format(username))
+        access_token = create_access_token(identity=user.username)
+        session[username]=user.init_permission().get('roles')
+        return jsonify({'status':200,'user':user.init_permission(),'token':'Bearer '+access_token})
+        # else:
+        #     return jsonify({"status":400,"message": "输入的验证码有误"}), 400        
     except Exception as e:
         app.logger.error(e)
 

@@ -2,6 +2,7 @@ from flask import Flask,session
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 from  flask_bcrypt import Bcrypt
 import os,logging
 from logging.handlers import RotatingFileHandler
@@ -42,6 +43,7 @@ def create_app(config_name):
         __name__,
         static_folder='../static'
     )
+    CORS(app, supports_credentials=True)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     setup_log(config_name)
