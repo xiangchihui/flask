@@ -43,10 +43,10 @@ export default {
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
-    },
-    routes() {
-      return this.$store.state.permission.routers
     }
+    // routes() {
+    //   return this.$store.state.permission.routers
+    // }
   },
   watch: {
     $route() {
@@ -71,23 +71,27 @@ export default {
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
-      routes.forEach(route => {
-        if (route.meta && route.meta.affix) {
-          const tagPath = path.resolve(basePath, route.path)
-          tags.push({
-            fullPath: tagPath,
-            path: tagPath,
-            name: route.name,
-            meta: { ...route.meta }
-          })
-        }
-        if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
-          if (tempTags.length >= 1) {
-            tags = [...tags, ...tempTags]
+      // 判断是否为空，否则控制台会报错
+      if (this.routes) {
+        routes.forEach(route => {
+          if (route.meta && route.meta.affix) {
+            const tagPath = path.resolve(basePath, route.path)
+            tags.push({
+              fullPath: tagPath,
+              path: tagPath,
+              name: route.name,
+              meta: { ...route.meta }
+            })
           }
-        }
-      })
+          if (route.children) {
+            const tempTags = this.filterAffixTags(route.children, route.path)
+            if (tempTags.length >= 1) {
+              tags = [...tags, ...tempTags]
+            }
+          }
+        })
+      }
+
       return tags
     },
     initTags() {

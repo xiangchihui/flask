@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../layout/index'
+import chartsRouter from './modules/charts'
+import tableRouter from './modules/table'
 
 Vue.use(Router)
 
@@ -20,6 +22,8 @@ export const constantRouterMap = [
     component: (resolve) => require(['@/views/features/401'], resolve),
     hidden: true
   },
+  tableRouter,
+  chartsRouter,
   {
     path: '/redirect',
     component: Layout,
@@ -35,6 +39,7 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    hidden: true,
     children: [
       {
         path: 'dashboard',
@@ -47,7 +52,7 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: Layout,
-    // hidden: true,
+    hidden: true,
     redirect: 'noredirect',
     children: [
       {
@@ -60,26 +65,9 @@ export const constantRouterMap = [
   }
 ]
 
-// export default new Router({
-//   // mode: 'hash',
-//   mode: 'history',
-//   scrollBehavior: () => ({ y: 0 }),
-//   routes: constantRouterMap
-// })
-
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-const router = createRouter()
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
 export default new Router({
+  // mode: 'hash',
+  mode: 'history',
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

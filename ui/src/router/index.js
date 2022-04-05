@@ -57,6 +57,7 @@ export const loadMenus = (next, to) => {
     const sdata = JSON.parse(JSON.stringify(res))
     const rdata = JSON.parse(JSON.stringify(res))
     const sidebarRoutes = filterAsyncRouter(sdata)
+    // const sidebarRoutes = [{}]
     const rewriteRoutes = filterAsyncRouter(rdata, true)
     rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
 

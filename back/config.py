@@ -25,7 +25,7 @@ class DevelopemntConfig(BaseConfig):
     DRIVER = 'pymysql'
     USERNAME = 'root'
     PASSWORD = '123456'
-    HOST = '101.43.178.15'
+    HOST = '127.0.0.1'
     PORT = '3306'
     DATABASE = 'eladmin'
     SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=UTF8MB4".format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST, PORT,

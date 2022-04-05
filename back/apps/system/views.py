@@ -30,7 +30,6 @@ def login():
             return jsonify({'status':400,'message':'Missing JSON in request'})
         print(request.form)
         data= json.loads(request.get_data()) #获取前端提交过来的json数据
-        print(data)
         username = data.get('username',None)
         password = data.get('password',None)      
         # code = data.get('code',None)
@@ -963,3 +962,14 @@ def protected():
     return jsonify({'code':200,'msg':'这是一个测试'}), 200
 
 
+@systembp.route('/api/article/list',methods=['get'])
+def article_list_data():
+    request_data =request.args
+    print(request_data)
+    data ={
+        'items' :[{'id':1,'title':'文章',"author":'张三'}],
+        'total': 20
+
+    }
+    return jsonify({'status':200,'data':data})
+    
