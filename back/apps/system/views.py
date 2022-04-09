@@ -198,7 +198,7 @@ class MenuContraller(Resource):
     def put(self):
         try:
             postdata=json.loads(request.get_data())
-            Menu.query.filter_by(id=postdata.get('id')).update({
+            Menu.query.filter_by(id=int(postdata.get('id'))).update({
                 'pid':postdata.get('pid'),
                 'type':postdata.get('type'),
                 'title':postdata.get('title'),
@@ -221,7 +221,14 @@ class MenuContraller(Resource):
     @PreAuthorize("menu:del")  
     def delete(self):
         try:
-             pass
+            if not request.is_json:
+                return jsonify({'status':400,'message':'Missing JSON in request'})
+            
+            if not request.get_data() :
+                return {'status':400,'message':'没有获取数据'},400
+            for id in json.loads(request.get_data()):
+               Menu.query.get(int(id)).delete()
+            return {'status':200,'message':'数据删除成功'},200
         except Exception as e:
              print(e)
 

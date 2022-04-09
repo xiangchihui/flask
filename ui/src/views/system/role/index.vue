@@ -276,7 +276,7 @@ export default {
       })
     },
     // 获取部门数据
-    getDepts() {
+    getDeptslist() {
       getDepts({ enabled: true }).then(res => {
         this.depts = res.content.map(function(obj) {
           if (obj.hasChildren) {
@@ -325,8 +325,8 @@ export default {
     },
     // 如果数据权限为自定义则获取部门数据
     changeScope() {
-      if (this.form.dataScope === '自定义') {
-        this.getDepts()
+      if (this.form.data_scope === '自定义') {
+        this.getDeptslist()
       }
     },
     checkboxT(row) {
